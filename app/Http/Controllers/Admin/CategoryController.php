@@ -3,32 +3,31 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Category;
-use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Repository;
 use App\Http\Requests\StoreCategory;
 use App\Http\Requests\UpdateCategory;
-use Illuminate\Support\Facades\Auth;
 use Brian2694\Toastr\Facades\Toastr;
+use App\Traits\ControllerClassMembersForPagingAndModeling;
 
+/**
+ * Category Controller Class
+ */
 class CategoryController extends Controller
 {
-    protected $model_category;
-    protected $per_page = 500;
-
+    use ControllerClassMembersForPagingAndModeling;
     /**
-     * Create a new controller instance.
+     * Category Controller Constructor.
      *
-     * @param Category $model_category
-     *
-     * @return void
+     * @param Int $per_page
      */
-    public function __construct(Category $model_category, $per_page = 500)
+    public function __construct(Int $per_page = 500)
     {
-        $this->per_page = $per_page;
-        $this->model_category = new Repository($model_category, $this->per_page);
-    }
+        $this->repository   = new Repository(new Category);
+        $this->per_page     = $per_page;
+    }//end __construct()
+
 
     /**
      * Display a listing of the resource.
@@ -37,13 +36,22 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $arr_categories = $this->model_category->all();
-        $int_categories_count = $this->model_category->count();
-        return view('admin.category.index', compact(
-            'arr_categories', 'int_categories_count'
+        $page_size          = $this->per_page;
+
+        $categories       = $this->repository->page($page_size);
+        
+        $categories_count = $this->repository->count();
+
+        return view(
+            'admin.category.index',
+            compact(
+                'categories',
+                'categories_count'
             )
         );
-    }
+
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -53,94 +61,111 @@ class CategoryController extends Controller
     public function create()
     {
         return view('admin.category.create');
-    }
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param StoreCategory $request
+     *
      * @return \Illuminate\Http\Response
      */
-    
     public function store(StoreCategory $request)
     {
         // The incoming request is valid...
         // Retrieve the validated input data...
         $validated = $request->validated();
-        $slug = str_slug($request->name);
+        
+        $obj_category = $this->repository->fillAndSave($validated);
 
-        $obj_category = $this->model_category->create();
-        $obj_category->name = $request->name;
-        $obj_category->slug = $slug;
-        $obj_category->save();
+        Toastr::success('Category Successfully Saved :)', 'Success');
 
-        Toastr::success('Category Successfully Saved :)','Success');
         return redirect()->route('admin.category.index');
-    }
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($int_id)
+    public function show(String $id)
     {
-        $obj_category = $this->model_category->show($int_id);
-        $arr_category_articles = $obj_category->articles()->paginate($this->per_page);
-        $int_category_articles_count = $obj_category->articles->count();
-        return view('admin.category.show', compact(
-            'obj_category', 'arr_category_articles',
-            'int_category_articles_count'
+        $category                = $this->repository->find($id);
+        $category_articles       = $category->articles()->paginate($this->per_page);
+        $category_articles_count = $category->articles->count();
+
+        return view(
+            'admin.category.show',
+            compact(
+                'category',
+                'category_articles',
+                'category_articles_count'
             )
         );
-    }
+
+    }//end show()
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Category  $category
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit($int_id)
+    public function edit(String $id)
     {
-        $obj_category = $this->model_category->show($int_id);
-        return view('admin.category.edit', compact('obj_category'));
-    }
+        $category = $this->repository->find($id);
+
+        return view('admin.category.edit', compact('category'));
+
+    }//end edit()
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
+     * @param UpdateCategory $request
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategory $request, $int_id)
+    public function update(UpdateCategory $request, String $id)
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
-        $slug = str_slug($request->name);
+        
+        $this->repository->update($id, $validated);
 
-        $obj_article = $this->model_category->show($int_id);
-        $obj_article->name = $request->name;
-        $obj_article->slug = $slug;
-        $obj_article->save();
+        Toastr::success('Category Successfully Updated :)', 'Success');
 
-        Toastr::success('Category Successfully Updated :)','Success');
         return redirect()->route('admin.category.index');
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($int_id)
+    public function destroy(String $id)
     {
-        $obj_article = $this->model_category->show($int_id);
-        $obj_article->delete();
-        Toastr::success('Category Successfully Deleted :)','Success');
+        $this->repository->remove($id);
+        
+        Toastr::success('Category Successfully Deleted :)', 'Success');
+
         return redirect()->back();
-    }
-}
+
+    }//end destroy()
+
+
+}//end class

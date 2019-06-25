@@ -18,12 +18,12 @@
                         </h2>
                     </div>
                     <div class="body">
-                        <form action="{{ route('admin.category.update',$obj_category->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.category.update',$category->id) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" id="name" class="form-control" name="name" value="{{ $obj_category->name }}">
+                                    <input type="text" id="name" class="form-control" name="name" value="{{ $category->name }}">
                                     <label class="form-label">Category Name</label>
                                 </div>
                             </div>

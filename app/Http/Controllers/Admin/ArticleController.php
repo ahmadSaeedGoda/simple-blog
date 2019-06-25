@@ -10,38 +10,43 @@ use Illuminate\Http\Request;
 use App\Repositories\Repository;
 use Brian2694\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
+use App\Events\PublishArticle;
+use App\Traits\ControllerClassMembersForPagingAndModeling;
 
-
+/**
+ * Article Controller Class
+ */
 class ArticleController extends Controller
 {
-
-    protected $model_article;
-    protected $per_page = 500;
-
+    use ControllerClassMembersForPagingAndModeling;
     /**
-     * ArticleController constructor.
+     * Article Controller Constructor.
      *
-     * @param Article $model_article
+     * @param Int $per_page
      */
-    public function __construct(Article $model_article, $per_page = 500)
+    public function __construct(Int $per_page = 500)
     {
-        $this->per_page = $per_page;
-        $this->model_article = new Repository($model_article, $this->per_page);
-    }
+        $this->repository   = new Repository(new Article);
+        $this->per_page     = $per_page;
+    }//end __construct()
+
 
     /**
-     * Display a listing of the resource.
+     * Display All Records For The Resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $arr_articles = $this->model_article->with('category');
-        $int_articles_count = $this->model_article->count();
-        return view('admin.article.index', compact('arr_articles', 'int_articles_count'));
-    }
+        $page_size          = $this->per_page;
+
+        $articles       = $this->repository->page($page_size, ['category']);
+
+        $articles_count = $this->repository->count();
+
+        return view('admin.article.index', compact('articles', 'articles_count'));
+    }//end index()
+
 
     /**
      * Show the form for creating a new resource.
@@ -50,122 +55,134 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $arr_categories = (new Repository(new Category))->allWithoutPagination();
-        return view('admin.article.create', compact('arr_categories'));
-    }
+        $categories = $this->repository->setModel(new Category())->all();
+
+        return view('admin.article.create', compact('categories'));
+
+    }//end create()
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Requests\StoreArticle  $request
+     * @param StoreArticle $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreArticle $request)
     {
         // The incoming request is valid...
-    
         // Retrieve the validated input data...
         $validated = $request->validated();
-        $slug = str_slug($request->title);
-        $obj_article = $this->model_article->create();
-        $obj_article->title = $request->title;
-        $obj_article->slug = $slug;
-        $obj_article->body = $request->body;
-        $obj_article->is_published = ($request->is_published)? true:false;
-        $obj_article->category_id = $request->category_id;
-        $obj_article->save();
+        
+        $this->repository->fillAndSave($validated);
 
-        Toastr::success('Article Successfully Saved :)','Success');
+        Toastr::success('Article Successfully Saved :)', 'Success');
+
         return redirect()->route('admin.article.index');
-    }
+
+    }//end store()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Article  $model_article
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($int_id)
+    public function show(String $id)
     {
-        $obj_article = $this->model_article->show($int_id);
-        $arr_article_comments = $obj_article->comments()->with('user')->paginate($this->per_page);
-        $int_article_comments_count = $obj_article->comments->count();
-        return view('admin.article.show',compact(
-            'obj_article', 'arr_article_comments',
-            'int_article_comments_count'
+        $article                = $this->repository->find($id);
+        $article_comments       = $article->comments()->with('user')->paginate($this->per_page);
+        $article_comments_count = $article->comments->count();
+
+        return view(
+            'admin.article.show',
+            compact(
+                'article',
+                'article_comments',
+                'article_comments_count'
             )
         );
-    }
+
+    }//end show()
+
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Article  $model_article
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function edit($int_id)
+    public function edit(String $id)
     {
-        $obj_article = $this->model_article->show($int_id);
-        $arr_categories = (new Repository(new Category))->all();
-        return view('admin.article.edit', compact('obj_article', 'arr_categories'));
-    }
+        $article    = $this->repository->find($id);
+        
+        $categories = $this->repository->setModel(new Category())->all();
+
+        return view('admin.article.edit', compact('article', 'categories'));
+
+    }//end edit()
+
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Requests\StoreArticle  $request
-     * @param  \App\Models\Article  $model_article
+     * @param \App\Requests\StoreArticle $request
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticle $request, $int_id)
+    public function update(UpdateArticle $request, String $id)
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
-        $slug = str_slug($request->title);
 
-        $obj_article = $this->model_article->show($int_id);
-        $obj_article->title = $request->title;
-        $obj_article->slug = $slug;
-        $obj_article->body = $request->body;
-        $obj_article->is_published = ($request->is_published)? true:false;
-        $obj_article->category_id = $request->category_id;
-        $obj_article->save();
+        $this->repository->update($id, $validated);
 
-        Toastr::success('Article Successfully Updated :)','Success');
+        Toastr::success('Article Successfully Updated :)', 'Success');
+
         return redirect()->route('admin.article.index');
-    }
+
+    }//end update()
+
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Article  $model_article
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($int_id)
+    public function destroy(String $id)
     {
-        $obj_article = $this->model_article->show($int_id);
-        $obj_article->delete();
-        Toastr::success('Article Successfully Deleted :)','Success');
+        $this->repository->remove($id);
+        
+        Toastr::success('Article Successfully Deleted :)', 'Success');
+
         return redirect()->back();
-    }
+
+    }//end destroy()
+
 
     /**
-     * Remove the specified resource from storage.
+     * Publish the specified resource.
      *
-     * @param  \App\Models\Article  $model_article
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function publish($int_id)
+    public function publish(String $id)
     {
-        $obj_article = $this->model_article->show($int_id);
-        if ($obj_article->is_published == false)
-        {
-            $obj_article->is_published = true;
-            $obj_article->save();
-            Toastr::success('Article Successfully Published :)','Success');
-        } else {
-            Toastr::info('This Article is already Published','Info');
-        }
+        $this->repository->update($id, ['is_published'=>true]);
+
+        Toastr::success('Article Successfully Published :)', 'Success');
+
         return redirect()->back();
-    }
-}
+
+    }//end publish()
+
+
+}//end class

@@ -10,7 +10,7 @@
 @section('content')
     <div class="container-fluid">
         <!-- Vertical Layout | With Floating Label -->
-        <a href="{{ route('admin.category.index') }}" class="btn btn-danger waves-effect">BACK</a>
+        <a href="{{ url()->previous() }}" class="btn btn-danger waves-effect">BACK</a>
         <br>
         <br>
         <!-- Exportable Table -->
@@ -20,7 +20,7 @@
                     <div class="header">
                         <h2>
                             CATEGORY
-                            <span class="badge bg-blue">{!! $obj_category->name !!}</span>
+                            <span class="badge bg-blue">{!! $category->name !!}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -32,7 +32,7 @@
                         <div class="header bg-cyan">
                             <h2>
                                 Articles
-                            <span class="badge bg-blue">{{ $int_category_articles_count }}</span>
+                            <span class="badge bg-blue">{{ $category_articles_count }}</span>
                             </h2>
                         </div>
                         <div class="body">
@@ -61,35 +61,35 @@
                                     </tr>
                                     </tfoot>
                                     <tbody>
-                                        @foreach($arr_category_articles as $key=>$obj_article)
+                                        @foreach($category_articles as $key=>$article)
                                             <tr>
                                                 <td>{{ $key + 1 }}</td>
-                                                <td>{{ str_limit($obj_article->title,'10') }}</td>
+                                                <td>{{ str_limit($article->title,'10') }}</td>
                                                 <td>
-                                                    @if($obj_article->is_published == true)
+                                                    @if($article->is_published == true)
                                                         <span class="badge bg-blue">Published</span>
                                                     @else
                                                         <span class="badge bg-pink">Pending</span>
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <a href="{{route('admin.article.show', $obj_article->id)}}">
-                                                        {{ $obj_article->comments->count() }}
+                                                    <a href="{{route('admin.article.show', $article->id)}}">
+                                                        {{ $article->comments->count() }}
                                                     </a>
                                                 </td>
-                                                <td>{{ $obj_article->created_at }}</td>
-                                                <td>{{ $obj_article->updated_at }}</td>
+                                                <td>{{ $article->created_at }}</td>
+                                                <td>{{ $article->updated_at }}</td>
                                                 <td class="text-center">
-                                                    <a href="{{ route('admin.article.show',$obj_article->id) }}" class="btn btn-info waves-effect">
+                                                    <a href="{{ route('admin.article.show',$article->id) }}" class="btn btn-info waves-effect">
                                                         <i class="material-icons">visibility</i>
                                                     </a>
-                                                    <a href="{{ route('admin.article.edit',$obj_article->id) }}" class="btn btn-info waves-effect">
+                                                    <a href="{{ route('admin.article.edit',$article->id) }}" class="btn btn-info waves-effect">
                                                         <i class="material-icons">edit</i>
                                                     </a>
-                                                    <button class="btn btn-danger waves-effect" type="button" onclick="deleteArticle({{ $obj_article->id }})">
+                                                    <button class="btn btn-danger waves-effect" type="button" onclick="deleteArticle({{ $article->id }})">
                                                         <i class="material-icons">delete</i>
                                                     </button>
-                                                    <form id="delete-form-{{ $obj_article->id }}" action="{{ route('admin.article.destroy',$obj_article->id) }}" method="POST" style="display: none;">
+                                                    <form id="delete-form-{{ $article->id }}" action="{{ route('admin.article.destroy',$article->id) }}" method="POST" style="display: none;">
                                                         @csrf
                                                         @method('DELETE')
                                                     </form>
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <h6>Paginating Total Results From Database:</h6>
-                        {{ $arr_category_articles->links() }}
+                        {{ $category_articles->links() }}
                     </div>
                 </div>
         </div>

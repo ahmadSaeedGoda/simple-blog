@@ -14,8 +14,8 @@ class UsersTableSeeder extends Seeder
     {
         // Create the admin default user
         if (empty(
-                DB::table('users')->where('email', 'admin@admin.com')->first()
-            )
+            DB::table('users')->where('email', 'admin@admin.com')->first()
+        )
         ) {
             DB::table('users')->insert([
                 'is_admin' => true,
@@ -28,7 +28,7 @@ class UsersTableSeeder extends Seeder
 
         if (empty(
             DB::table('users')->where('email', 'user@user.com')->first()
-            )
+        )
         ) {
             // Create the visitor default user
             DB::table('users')->insert([

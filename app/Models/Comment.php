@@ -8,15 +8,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Comment extends Model
 {
     use SoftDeletes;
-    
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'post_id', 'user_id', 'comment'
+        'article_id',
+        'user_id',
+        'comment',
     ];
+
 
     /**
      * Get the article that the comment wrote on.
@@ -24,7 +27,9 @@ class Comment extends Model
     public function article()
     {
         return $this->belongsTo('App\Models\Article');
-    }
+
+    }//end article()
+
 
     /**
      * Get the user that the created the comment.
@@ -32,5 +37,8 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
-    }
-}
+
+    }//end user()
+
+
+}//end class

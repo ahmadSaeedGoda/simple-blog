@@ -3,32 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Comment;
-use App\Models\Article;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Repository;
-use App\Http\Requests\StoreComment;
-use App\Http\Requests\UpdateComment;
-use Illuminate\Support\Facades\Auth;
-use Brian2694\Toastr\Facades\Toastr;
+use App\Traits\ControllerClassMembersForPagingAndModeling;
 
+/**
+ * Comment Controller Class
+ */
 class CommentController extends Controller
 {
-    protected $model_comment;
-    protected $per_page = 500;
-
+    use ControllerClassMembersForPagingAndModeling;
     /**
-     * Create a new controller instance.
+     * Comment Controller Constructor.
      *
-     * @param Comment $model_comment
-     *
-     * @return void
+     * @param int $per_page
      */
-    public function __construct(Comment $model_comment, $per_page = 500)
+    public function __construct(Int $per_page = 500)
     {
-        $this->per_page = $per_page;
-        $this->model_comment = new Repository($model_comment, $this->per_page);
-    }
+        $this->repository   = new Repository(new Comment);
+        $this->per_page     = $per_page;
+
+    }//end __construct()
+
 
     /**
      * Display a listing of the resource.
@@ -37,27 +33,42 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $arr_comments = $this->model_comment->all();
-        $int_comments_count = $this->model_comment->count();
-        return view('admin.comment.index', compact(
-            'arr_comments', 'int_comments_count'
+        $page_size      = $this->per_page;
+
+        $comments       = $this->repository->page($page_size);
+        
+        $comments_count = $this->repository->count();
+
+        return view(
+            'admin.comment.index',
+            compact(
+                'comments',
+                'comments_count'
             )
         );
-    }
+
+    }//end index()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Comment  $model_comment
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($int_id)
+    public function show(String $id)
     {
-        $obj_comment = $this->model_comment->show($int_id);
-        return view('admin.comment.show',compact(
-            'obj_comment'
+        $comment = $this->repository->find($id);
+
+        return view(
+            'admin.comment.show',
+            compact(
+                'comment'
             )
         );
-    }
 
-}
+    }//end show()
+
+
+}//end class

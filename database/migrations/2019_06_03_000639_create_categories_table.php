@@ -15,20 +15,15 @@ class CreateCategoriesTable extends Migration
     {
         if (Schema::hasTable('categories')) {
             return;
-        } else {
-            Schema::connection(env('MYSQL_DB_CONNECTION'))
-                ->create('categories', function (Blueprint $table) {
-                    $table->engine = 'InnoDB';
-                    $table->bigIncrements('id');
-                    $table->string('name')->unique();
-                    $table->string('slug')->unique();
-                    $table->timestamps();
-                    $table->softDeletes();
-                });
         }
-        Artisan::call('db:seed', [
-            '--class' => CategoriesTableSeeder::class
-        ]);
+        Schema::create('categories', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->bigIncrements('id');
+            $table->string('name')->unique();
+            $table->string('slug')->unique();
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**

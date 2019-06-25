@@ -1,6 +1,6 @@
 @extends('layouts.backend.app')
 
-@section('title','Category')
+@section('title','Comment')
 
 @push('css')
 
@@ -9,13 +9,9 @@
 @section('content')
     <div class="container-fluid">
         <!-- Vertical Layout | With Floating Label -->
-        <a href="{{ route('admin.category.index') }}" class="btn btn-danger waves-effect">BACK</a>
+        <a href="{{ url()->previous() }}" class="btn btn-danger waves-effect">BACK</a>
         <br>
         <br>
-                        
-                    </div>
-                </div>
-            </div>
         <!-- Exportable Table -->
         <div class="row clearfix">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -23,17 +19,17 @@
                     <div class="header">
                         <h2>
                             Article
-                            <span class="badge bg-blue">{!! $obj_comment->article->title !!}</span>
+                            <span class="badge bg-blue">{!! $comment->article->title !!}</span>
                         </h2>
                     </div>
                     <div class="body">
                         <h6>
                             User Creator
-                            <span class="badge bg-blue">{!! $obj_comment->user->full_name !!}</span>
+                            <span class="badge bg-blue">{!! $comment->user->full_name !!}</span>
                         </h6>
                         <h6>Comment Body:</h6>
                         <div>
-                            <span class="">{!! $obj_comment->comment !!}</span>
+                            <span class="">{!! $comment->comment !!}</span>
                         </div>
                     </div>
                 </div>

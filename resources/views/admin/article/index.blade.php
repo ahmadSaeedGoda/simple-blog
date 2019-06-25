@@ -22,7 +22,7 @@
                     <div class="header">
                         <h2>
                             ALL ARTICLES
-                            <span class="badge bg-blue">{{ $int_articles_count }}</span>
+                            <span class="badge bg-blue">{{ $articles_count }}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -51,7 +51,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($arr_articles as $key=>$obj_article)
+                                    @foreach($articles as $key=>$obj_article)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ str_limit($obj_article->title,'10') }}</td>
@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <h6>Paginating Total Results From Database:</h6>
-                    {{ $arr_articles->links() }}
+                    {{ $articles->links() }}
                 </div>
             </div>
         </div>

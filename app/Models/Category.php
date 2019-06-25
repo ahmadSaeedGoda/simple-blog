@@ -15,8 +15,10 @@ class Category extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug'
+        'name',
+        'slug',
     ];
+
 
     /**
      * Get the articles for the Category.
@@ -24,6 +26,8 @@ class Category extends Model
     public function articles()
     {
         return $this->hasMany('App\Models\Article');
-    }
 
-}
+    }//end articles()
+
+
+}//end class

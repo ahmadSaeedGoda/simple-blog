@@ -40,7 +40,7 @@ Find file named .env inside the root directory and set the environment variables
 - Step 5: Install
     Now that you have the environment configured, you need to create a database for your app. To create database tables and to initial populate database use this command:
     ```sh
-    $ php artisan migrate
+    $ php artisan migrate --seed
     ```
     it will create the database with initial dummy and fake data as placeholders .
 
@@ -75,7 +75,8 @@ Or
 
 ### License
 
-This is free software distributed under the terms of the MIT license
+This is free software distributed under the terms of the WTFPL license along with MIT license as dual-licensed, You can choose whatever works for you.
+Please review the [LICENSE.md] [LMDL1] file included for this purpose.
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
@@ -84,3 +85,4 @@ This is free software distributed under the terms of the MIT license
    [IL1]: <https://github.com/ahmadSaeedGoda/simple-blog#Installation>
    [TL1]: <https://github.com/ahmadSaeedGoda/simple-blog#Troubleshooting>
    [LL1]: <https://github.com/ahmadSaeedGoda/simple-blog#License>
+   [LMDL1]: <https://github.com/ahmadSaeedGoda/simple-blog/blob/master/LICENSE.md>

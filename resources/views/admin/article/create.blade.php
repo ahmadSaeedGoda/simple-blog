@@ -23,13 +23,13 @@
                         <div class="body">
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input type="text" id="title" class="form-control" name="title">
+                                        <input type="text" id="title" class="form-control" name="title" value="{{ old('title') }}">
                                         <label class="form-label">Article Title</label>
                                     </div>
                                 </div>
 
                             <div class="form-group">
-                                <input type="checkbox" id="publish" class="filled-in" name="is_published" value="1">
+                                <input type="checkbox" id="publish" class="filled-in" name="is_published" value="1" {{ old('is_published')? 'checked' : '' }}>
                                 <label for="publish">Publish</label>
                             </div>
 
@@ -49,14 +49,14 @@
                                     <label for="category">Select Category</label>
                                     <select name="category_id" id="category" class="form-control show-tick" data-live-search="true">
                                         <option value="">Select Category</option>
-                                        @foreach($arr_categories as $obj_category)
+                                        @foreach($categories as $obj_category)
                                             <option value="{{ $obj_category->id }}">{{ $obj_category->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
 
-                            <a  class="btn btn-danger m-t-15 waves-effect" href="{{ route('admin.category.index') }}">BACK</a>
+                            <a  class="btn btn-danger m-t-15 waves-effect" href="{{ route('admin.article.index') }}">BACK</a>
                             <button type="submit" class="btn btn-primary m-t-15 waves-effect">SUBMIT</button>
 
                         </div>
@@ -72,7 +72,7 @@
                             </h2>
                         </div>
                         <div class="body">
-                            <textarea id="tinymce" name="body"></textarea>
+                            <textarea id="tinymce" name="body" class="form-control">{{ old('body') }}</textarea>
                         </div>
                     </div>
                 </div>

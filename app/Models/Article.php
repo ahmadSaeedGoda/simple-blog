@@ -15,7 +15,11 @@ class Article extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'body', 'category_id'
+        'title',
+        'slug',
+        'body',
+        'is_published',
+        'category_id',
     ];
 
     /**
@@ -24,7 +28,9 @@ class Article extends Model
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
-    }
+
+    }//end category()
+
 
     /**
      * Get the comments of the article.
@@ -32,27 +38,34 @@ class Article extends Model
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
-    }
+
+    }//end comments()
+
 
     /**
      * Scope a query to only include published articles.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
-    }
+
+    }//end scopePublished()
+
 
     /**
      * Scope a query to only include pending articles.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePending($query)
     {
         return $query->where('is_published', false);
-    }
-}
+
+    }//end scopePending()
+
+
+}//end class

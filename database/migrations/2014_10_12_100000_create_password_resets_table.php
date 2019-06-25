@@ -15,16 +15,15 @@ class CreatePasswordResetsTable extends Migration
     {
         if (Schema::hasTable('password_resets')) {
             return;
-        } else {
-            Schema::connection(env('MYSQL_DB_CONNECTION'))
-                ->create('password_resets', function (Blueprint $table) {
-                    $table->engine = 'InnoDB';
-                    $table->string('email')->index();
-                    $table->string('token');
-                    $table->timestamp('created_at')->nullable();
-                    $table->softDeletes();
-            });
         }
+        Schema::connection(env('MYSQL_DB_CONNECTION'))
+            ->create('password_resets', function (Blueprint $table) {
+                $table->engine = 'InnoDB';
+                $table->string('email')->index();
+                $table->string('token');
+                $table->timestamp('created_at')->nullable();
+                $table->softDeletes();
+            });
     }
 
     /**

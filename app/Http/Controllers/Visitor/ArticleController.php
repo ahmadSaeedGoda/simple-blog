@@ -10,96 +10,121 @@ use Brian2694\Toastr\Facades\Toastr;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Traits\ControllerClassMembersForPagingAndModeling;
 
+/**
+ * Article Controller Class
+ */
 class ArticleController extends Controller
 {
-    protected $model_article;
-    protected $per_page = 500;
-
+    use ControllerClassMembersForPagingAndModeling;
     /**
-     * ArticleController constructor.
+     * Article Controller Constructor.
      *
-     * @param Article $model_article
+     * @param Int $per_page
      */
-    public function __construct(Article $model_article, $per_page = 500)
+    public function __construct(Int $per_page = 500)
     {
-        $this->per_page = $per_page;
-        $this->model_article = new Repository($model_article, $this->per_page);
-    }
+        $this->repository = new Repository(new Article);
+        $this->per_page   = $per_page;
+    }//end __construct()
+
 
     /**
-     * Display a listing of the resource.
+     * Display All Records For The Resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $arr_articles = $this->model_article->getModel()->Published()
-            ->latest()->paginate($this->per_page);
-        $arr_categories = (new Repository(new Category))->allWithoutPagination();
-        $int_articles_count = $this->model_article->getModel()->Published()->count();
-        return view('visitor.article.index', compact(
-            'arr_articles', 'int_articles_count',
-            'arr_categories'
-        ));
-    }
+        $page_size      = $this->per_page;
+
+        $articles       = $this->repository->getModel()->Published()->with('category')->paginate($page_size);
+
+        $articles_count = $this->repository->getModel()->Published()->count();
+
+        $categories     = $this->repository->setModel(new Category())->all();
+
+        return view(
+            'visitor.article.index',
+            compact(
+                'articles',
+                'articles_count',
+                'categories'
+            )
+        );
+    }//end index()
+
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Article  $article
+     * @param String $id
+     *
      * @return \Illuminate\Http\Response
      */
-    public function show($int_id)
+    public function show(String $id)
     {
-        $obj_article = $this->model_article->show($int_id);
-        $arr_article_comments = $obj_article->comments()->with('user')->paginate($this->per_page);
-        $int_article_comments_count = $obj_article->comments->count();
+        $article                = $this->repository->find($id);
+        
+        $article_comments_count = $article->comments->count();
 
-        $random_articles = $this->model_article->getModel()
-            ->Published()->take(3)->inRandomOrder()->get();
-        return view('visitor.article.show',compact(
-            'obj_article', 'arr_article_comments',
-            'int_article_comments_count', 'random_articles'
+        return view(
+            'visitor.article.show',
+            compact(
+                'article',
+                'article_comments_count'
             )
         );
-    }
+
+    }//end show()
+
 
     /**
      * Get all articles assigned to a given category.
      *
-     * @param  Illuminate\Http\Request  $request
-     * @param  \App\Models\Category  $category
+     * @param  Illuminate\Http\Request $request
+     * @param  \App\Models\Category    $category
      * @return \Illuminate\Http\Response
      */
     public function getArticlesByCategory(Request $request)
     {
         $messages = [
             'category_id.required' => 'You need to choose one category.',
+            'category_id.min:1' => 'Please Select Category!'
         ];
 
-        $validator = Validator::make($request->all(), [
-            "category_id" => "required|integer",
-        ], $messages);
+        $validator = Validator::make(
+            $request->all(),
+            ['category_id' => 'required|integer|min:1'],
+            $messages
+        );
 
-        if ($validator->fails())
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
+        }
+
+        $category_id        = $request->category_id;
+
+        $selected_category  = $this->repository->setModel(new Category)->find($category_id);
+
+        $categories         = $this->repository->all();
         
-        $int_category_id = $request->category_id;
-        
-        $obj_selected_category = (new Repository(new Category))->show($int_category_id);
-        
-        $arr_articles = $this->model_article->getModel()->Published()
-            ->where('category_id', $int_category_id)
-            ->latest()->paginate($this->per_page);
-        
-        $arr_categories = (new Repository(new Category))->allWithoutPagination();
-        
-        $int_articles_count = $arr_articles->count();
-        
-        return view('visitor.article.index', compact(
-            'arr_articles', 'int_articles_count',
-            'arr_categories', 'obj_selected_category'
-        ));
-    }
-}
+        $articles           = $this->repository->setModel(new Article)->getModel()->Published()->where('category_id', $category_id)->latest()->paginate($this->per_page);
+
+        $articles_count     = $this->repository->getModel()->Published()->count();
+
+        return view(
+            'visitor.article.index',
+            compact(
+                'articles',
+                'articles_count',
+                'categories',
+                'selected_category'
+            )
+        );
+
+    }//end getArticlesByCategory()
+
+
+}//end class

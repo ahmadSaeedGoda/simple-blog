@@ -16,7 +16,7 @@
                     <div class="header">
                         <h2>
                             ALL COMMENTS
-                            <span class="badge bg-blue">{{ $int_comments_count }}</span>
+                            <span class="badge bg-blue">{{ $comments_count }}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -43,7 +43,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($arr_comments as $key=>$obj_comment)
+                                    @foreach($comments as $key=>$obj_comment)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ str_limit($obj_comment->comment,'20') }}</td>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <h6>Paginating Total Results From Database:</h6>
-                    {{ $arr_comments->links() }}
+                    {{ $comments->links() }}
                 </div>
             </div>
         </div>

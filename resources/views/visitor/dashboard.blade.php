@@ -21,7 +21,7 @@
                     </div>
                     <div class="content">
                         <div class="text">TOTAL ARTICLES</div>
-                        <div class="number count-to" data-from="0" data-to="{{$int_articles_count}}" data-speed="1000" data-fresh-interval="20"></div>
+                        <div class="number count-to" data-from="0" data-to="{{$articles_count}}" data-speed="1000" data-fresh-interval="20"></div>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,7 @@
                     </div>
                     <div class="content">
                         <div class="text">CATEGORIES</div>
-                        <div class="number count-to" data-from="0" data-to="{{ $int_categories_count }}" data-speed="1000" data-fresh-interval="20"></div>
+                        <div class="number count-to" data-from="0" data-to="{{ $categories_count }}" data-speed="1000" data-fresh-interval="20"></div>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     </div>
                     <div class="content">
                         <div class="text">TOTAL VISITORS</div>
-                        <div class="number count-to" data-from="0" data-to="{{ $int_visitors_count }}" data-speed="1000" data-fresh-interval="20"></div>
+                        <div class="number count-to" data-from="0" data-to="{{ $visitors_count }}" data-speed="1000" data-fresh-interval="20"></div>
                     </div>
                 </div>
             </div>

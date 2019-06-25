@@ -15,26 +15,21 @@ class CreateCommentsTable extends Migration
     {
         if (Schema::hasTable('comments')) {
             return;
-        } else {
-            Schema::connection(env('MYSQL_DB_CONNECTION'))
-                ->create('comments', function (Blueprint $table) {
-                    $table->bigIncrements('id');
-                    $table->bigInteger('article_id')->unsigned();
-                    $table->bigInteger('user_id')->unsigned();
-                    $table->text('comment');
-                    $table->foreign('article_id')
-                        ->references('id')->on('articles')
-                        ->onDelete('cascade');
-                    $table->foreign('user_id')
-                        ->references('id')->on('users')
-                        ->onDelete('cascade');
-                    $table->timestamps();
-                    $table->softDeletes();
-                });
         }
-        Artisan::call('db:seed', [
-            '--class' => CommentsTableSeeder::class
-        ]);
+        Schema::create('comments', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->bigInteger('article_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
+            $table->longText('comment');
+            $table->foreign('article_id')
+                ->references('id')->on('articles')
+                ->onDelete('cascade');
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**

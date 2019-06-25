@@ -7,11 +7,15 @@ use Illuminate\Support\ServiceProvider;
 class BackendServiceProvider extends ServiceProvider
 {
 
+
     public function register()
     {
         $this->app->bind(
             'App\Repositories\RepositoryInterface',
             'App\Repositories\Repository'
         );
-    }
-}
+
+    }//end register()
+
+
+}//end class

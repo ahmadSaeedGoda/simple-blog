@@ -18,7 +18,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
     ];
 
     /**
@@ -27,7 +30,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -37,8 +41,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'last_login_at' => 'datetime',
-        'is_admin' => 'boolean',
+        'last_login_at'     => 'datetime',
+        'is_admin'          => 'boolean',
     ];
 
     /**
@@ -46,9 +50,8 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $attributes = [
-        'is_admin' => false,
-    ];
+    protected $attributes = ['is_admin' => false];
+
 
     /**
      * Get the comments for the User.
@@ -56,7 +59,9 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
-    }
+
+    }//end comments()
+
 
     /**
      * Get the user's full name.
@@ -66,27 +71,34 @@ class User extends Authenticatable
     public function getFullNameAttribute()
     {
         return ucwords($this->first_name.' '.$this->last_name);
-    }
+
+    }//end getFullNameAttribute()
+
 
     /**
      * Scope a query to only include admin users.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeAdmin($query)
     {
         return $query->where('is_admin', true);
-    }
+
+    }//end scopeAdmin()
+
 
     /**
      * Scope a query to only include visitor users.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeVisitor($query)
     {
         return $query->where('is_admin', false);
-    }
-}
+
+    }//end scopeVisitor()
+
+
+}//end class

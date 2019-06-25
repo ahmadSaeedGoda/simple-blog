@@ -23,7 +23,7 @@ class DatabaseTest extends TestCase
         $users = factory(User::class, 3)
            ->create()
            ->each(function ($user) {
-            });
+           });
         $this->assertTrue(true);
     }
 }

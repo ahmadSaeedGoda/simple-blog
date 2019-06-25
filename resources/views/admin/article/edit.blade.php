@@ -10,7 +10,7 @@
 @section('content')
     <div class="container-fluid">
         <!-- Vertical Layout | With Floating Label -->
-        <form action="{{ route('admin.article.update',$obj_article->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.article.update',$article->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row clearfix">
@@ -24,13 +24,13 @@
                         <div class="body">
                             <div class="form-group form-float">
                                 <div class="form-line">
-                                    <input type="text" id="title" class="form-control" name="title" value="{{ $obj_article->title }}">
-                                    <label class="form-label">Post Title</label>
+                                    <input type="text" id="title" class="form-control" name="title" value="{{ $article->title }}">
+                                    <label class="form-label">Article Title</label>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <input type="checkbox" id="publish" class="filled-in" name="is_published" value="1" {{ $obj_article->is_published == true ? 'checked' : '' }}>
+                                <input type="checkbox" id="publish" class="filled-in" name="is_published" value="1" {{ $article->is_published == true ? 'checked' : '' }}>
                                 <label for="publish">Publish</label>
                             </div>
 
@@ -50,9 +50,9 @@
                                     <label for="category">Select Category</label>
                                     <select name="category_id" id="category" class="form-control show-tick" data-live-search="true">
                                             <option value="">Select Category</option>
-                                        @foreach($arr_categories as $category)
+                                        @foreach($categories as $category)
                                             <option
-                                                {{ $obj_article->category_id == $category->id ? 'selected' : '' }}
+                                                {{ $article->category_id == $category->id ? 'selected' : '' }}
                                                 value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endforeach
                                     </select>
@@ -75,7 +75,7 @@
                             </h2>
                         </div>
                         <div class="body">
-                            <textarea id="tinymce" name="body">{{ $obj_article->body }}</textarea>
+                            <textarea id="tinymce" name="body" class="form-control">{{ $article->body }}</textarea>
                         </div>
                     </div>
                 </div>

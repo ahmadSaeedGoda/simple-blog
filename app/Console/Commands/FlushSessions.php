@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 
 class FlushSessions extends Command
 {
+
     /**
      * The name and signature of the console command.
      *
@@ -20,6 +21,7 @@ class FlushSessions extends Command
      */
     protected $description = 'Flush all user sessions';
 
+
     /**
      * Create a new command instance.
      *
@@ -28,7 +30,9 @@ class FlushSessions extends Command
     public function __construct()
     {
         parent::__construct();
-    }
+
+    }//end __construct()
+
 
     /**
      * Execute the console command.
@@ -38,5 +42,8 @@ class FlushSessions extends Command
     public function handle()
     {
         \DB::table('sessions')->truncate();
-    }
-}
+
+    }//end handle()
+
+
+}//end class

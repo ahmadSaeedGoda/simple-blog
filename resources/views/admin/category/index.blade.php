@@ -22,7 +22,7 @@
                     <div class="header">
                         <h2>
                             ALL CATEGORIES
-                            <span class="badge bg-blue">{{ $int_categories_count }}</span>
+                            <span class="badge bg-blue">{{ $categories_count }}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -49,7 +49,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($arr_categories as $key=>$obj_category)
+                                    @foreach($categories as $key=>$obj_category)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ str_limit($obj_category->name,'10') }}</td>
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                     <h6>Paginating Total Results From Database:</h6>
-                    {{ $arr_categories->links() }}
+                    {{ $categories->links() }}
                 </div>
             </div>
         </div>

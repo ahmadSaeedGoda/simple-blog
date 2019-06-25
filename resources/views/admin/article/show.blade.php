@@ -1,6 +1,6 @@
 @extends('layouts.backend.app')
 
-@section('title','Post')
+@section('title','Article')
 
 @push('css')
     <!-- JQuery DataTable Css -->
@@ -10,13 +10,13 @@
 @section('content')
     <div class="container-fluid">
         <!-- Vertical Layout | With Floating Label -->
-        <a href="{{ route('admin.article.index') }}" class="btn btn-danger waves-effect">BACK</a>
-        @if($obj_article->is_published == false)
-            <button type="button" class="btn btn-success waves-effect pull-right" onclick="publishArticle({{ $obj_article->id }})">
+        <a href="{{ url()->previous() }}" class="btn btn-danger waves-effect">BACK</a>
+        @if($article->is_published == false)
+            <button type="button" class="btn btn-success waves-effect pull-right" onclick="publishArticle({{ $article->id }})">
                 <i class="material-icons">done</i>
                 <span>Publish</span>
             </button>
-            <form method="post" action="{{ route('admin.article.publish',$obj_article->id) }}" id="publish-form" style="display: none">
+            <form method="post" action="{{ route('admin.article.publish',$article->id) }}" id="publish-form" style="display: none">
                 @csrf
                 @method('PUT')
             </form>
@@ -37,7 +37,7 @@
                         </h2>
                     </div>
                     <div class="body">
-                        {!! $obj_article->body !!}
+                        {!! $article->body !!}
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <div class="header bg-cyan">
                         <h2>
                             Comments
-                        <span class="badge bg-blue">{{ $int_article_comments_count }}</span>
+                        <span class="badge bg-blue">{{ $article_comments_count }}</span>
                         </h2>
                     </div>
                     <div class="body">
@@ -73,7 +73,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                    @foreach($arr_article_comments as $key=>$obj_comment)
+                                    @foreach($article_comments as $key=>$obj_comment)
                                         <tr>
                                             <td>{{ $key + 1 }}</td>
                                             <td>{{ str_limit($obj_comment->comment,'20') }}</td>
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <h6>Paginating Total Results From Database:</h6>
-                    {{ $arr_article_comments->links() }}
+                    {{ $article_comments->links() }}
                 </div>
             </div>
         </div>

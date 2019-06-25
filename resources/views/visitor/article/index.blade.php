@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="center-text">
-        <h3 class="title"><b>{{ ($int_articles_count==1)? "$int_articles_count ARTICLE" : "$int_articles_count ARTICLES"}}</b></h3>
+        <h3 class="title"><b>{{ ($articles_count==1)? "$articles_count ARTICLE" : "$articles_count ARTICLES"}}</b></h3>
     </div><!-- slider -->
 
     <section class="blog-area section">
@@ -24,11 +24,11 @@
                             <div class="form-line {{ $errors->has('category_id') ? 'focused error' : '' }}">
                                 <select name="category_id" id="category" class="form-control show-tick" data-live-search="true">
                                     <option value="">Select Category</option>
-                                    @foreach($arr_categories as $obj_category)
-                                        @if(!empty($obj_selected_category)&&$obj_selected_category->id == $obj_category->id)
-                                            <option value="{{ $obj_category->id }}" selected>{{ $obj_category->name }}</option>
+                                    @foreach($categories as $category)
+                                        @if(!empty($selected_category)&&$selected_category->id == $category->id)
+                                            <option value="{{ $category->id }}" selected>{{ $category->name }}</option>
                                         @else
-                                            <option value="{{ $obj_category->id }}">{{ $obj_category->name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                                         @endif
                                     @endforeach
                                 </select>
@@ -42,18 +42,21 @@
             </form>
 
             <div class="row">
-                @foreach($arr_articles as $obj_article)
+                @if (count($articles)===0)
+                    <h1 class="title">Empty Result</h1>
+                @endif
+                @foreach($articles as $article)
                     <div class="col-lg-4 col-md-6">
                         <div class="card h-100">
                             <div class="single-post post-style-1">
                                 <div class="blog-info">
                                     <h4 class="title">
-                                        <a href="{{ route('visitor.article.show', $obj_article->id) }}">
-                                            <b>{{ $obj_article->title }}</b>
+                                        <a href="{{ route('visitor.article.show', $article->id) }}">
+                                            <b>{{ $article->title }}</b>
                                         </a>
                                     </h4>
                                     <ul class="post-footer">
-                                        <li><a href="#"><i class="ion-chatbubble"></i>{{ $obj_article->comments->count() }}</a></li>
+                                        <li><a href="#"><i class="ion-chatbubble"></i>{{ $article->comments->count() }}</a></li>
                                     </ul>
                                 </div><!-- blog-info -->
                             </div><!-- single-post -->
@@ -61,7 +64,7 @@
                     </div><!-- col-lg-4 col-md-6 -->
                 @endforeach
             </div><!-- row -->
-            {{ $arr_articles->links() }}
+            {{ $articles->links() }}
         </div><!-- container -->
     </section><!-- section -->
 @endsection
