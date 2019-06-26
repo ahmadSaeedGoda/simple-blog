@@ -1,0 +1,7 @@
+1. Review All generated reports using phpmd and apply possible changes they report.
+
+2. Use php_codesniffer package to sniff the code against some 
+    rules then fix the possible fixable issues using the laravel-php-cs-fixer package.
+
+3. Use phpunit to generate code coverage reports that will help creating unit tests
+ that covers all units and feature in a TDD manner.
