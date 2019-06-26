@@ -78,10 +78,6 @@ Site loading very slow?
 ```sh
     $ composer dump-autoload --optimize
 ```
-Or
-```sh
-    $ php artisan dump-autoload
-```
 
 ### License
 
