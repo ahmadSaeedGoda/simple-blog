@@ -42,10 +42,10 @@ as per your database configurations.
 
 - Step 5: Generate App Key
     Run the following command using the CLI where the project exists:
-  ```sh
+    ```sh
     $ php artisan key:generate
     ```
-assert to get the prompt output saying "Application key set successfully."
+    assert to get the prompt output saying "Application key set successfully."
 
 - Step 6: Install
     Now that you have the environment configured, you need to create a database schema for your app. To create database tables and to initial populate them use this command:
@@ -86,7 +86,7 @@ Or
 ### License
 
 This is free software distributed under the terms of the WTFPL license along with MIT license as dual-licensed, You can choose whatever works for you.
-Please review the [LICENSE.md] [LMDL1] file included for this purpose.
+Please review the [LICENSE.md][LMDL1] file included for this purpose.
 
 [//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)
 
