@@ -30,21 +30,31 @@ Navigate to the root directory of the project you cloned or downloaded then exec
 - Step 3: Create & Configure your database
 If you finished first two steps, now you can create database on your database server(MySQL). You need to create database preferably with utf-8 collation(uft8_general_ci), to install and for the application to work perfectly.
 - Step 4: Set the Environment Variables
-Find file named .env inside the root directory and set the environment variables listed below:
+Find file named ".env.example" inside the root directory. Copy the file then rename the new one ".env" and set the environment variables listed below:
     - MYSQL_DB_CONNECTION
     - MYSQL_DB_HOST
     - MYSQL_DB_PORT
     - MYSQL_DB_DATABASE
     - MYSQL_DB_USERNAME
     - MYSQL_DB_PASSWORD
-- Step 5: Install
-    Now that you have the environment configured, you need to create a database for your app. To create database tables and to initial populate database use this command:
+as per your database configurations.
+
+
+- Step 5: Generate App Key
+    Run the following command using the CLI where the project exists:
+  ```sh
+    $ php artisan key:generate
+    ```
+assert to get the prompt output saying "Application key set successfully."
+
+- Step 6: Install
+    Now that you have the environment configured, you need to create a database schema for your app. To create database tables and to initial populate them use this command:
     ```sh
     $ php artisan migrate --seed
     ```
     it will create the database with initial dummy and fake data as placeholders .
 
-- Step 6: Start Page
+- Step 7: Start Page
     - On server:
         ```
         Open the specified entry point in your hosts file in browser or make entry in hosts file if not done.
