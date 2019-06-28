@@ -5,3 +5,5 @@
 
 3. Use phpunit to generate code coverage reports that will help creating unit tests
  that covers all units and feature in a TDD manner.
+
+4. Using git hooks to enforce PSR on modified code before committing to repo.
