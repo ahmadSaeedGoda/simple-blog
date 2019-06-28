@@ -14,8 +14,5 @@ class BackendServiceProvider extends ServiceProvider
             'App\Repositories\RepositoryInterface',
             'App\Repositories\Repository'
         );
-
     }//end register()
-
-
 }//end class

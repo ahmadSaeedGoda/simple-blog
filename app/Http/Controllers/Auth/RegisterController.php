@@ -39,7 +39,6 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-
     }//end __construct()
 
 
@@ -81,7 +80,6 @@ class RegisterController extends Controller
                 ],
             ]
         );
-
     }//end validator()
 
 
@@ -101,8 +99,5 @@ class RegisterController extends Controller
                 'password'   => Hash::make($data['password']),
             ]
         );
-
     }//end create()
-
-
 }//end class

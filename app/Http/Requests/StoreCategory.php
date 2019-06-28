@@ -18,7 +18,6 @@ class StoreCategory extends FormRequest
         return [
             'name' => 'required|unique:categories|min:3|max:255'
         ];
-
     }//end rules()
 
 
@@ -32,7 +31,6 @@ class StoreCategory extends FormRequest
         return [
             'name.required' => 'The category name shouldn\'t be blank!'
         ];
-
     }//end messages()
 
     /**
@@ -61,5 +59,4 @@ class StoreCategory extends FormRequest
 
         $this->replace($input);
     }
-
 }//end class

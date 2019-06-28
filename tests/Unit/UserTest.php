@@ -26,7 +26,7 @@ class UserTest extends TestCase
      *
      * @return void
      */
-    public function UserIsAdmin()
+    public function userIsAdmin()
     {
         $admin = factory(User::class)
             ->states('is_admin', true)

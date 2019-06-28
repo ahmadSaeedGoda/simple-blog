@@ -30,7 +30,6 @@ class FlushSessions extends Command
     public function __construct()
     {
         parent::__construct();
-
     }//end __construct()
 
 
@@ -42,8 +41,5 @@ class FlushSessions extends Command
     public function handle()
     {
         \DB::table('sessions')->truncate();
-
     }//end handle()
-
-
 }//end class

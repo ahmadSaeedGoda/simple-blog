@@ -22,9 +22,9 @@ class CategoryController extends Controller
      *
      * @param Int $per_page
      */
-    public function __construct(Int $per_page = 500)
+    public function __construct(int $per_page = 500)
     {
-        $this->repository   = new Repository(new Category);
+        $this->repository   = new Repository(new Category());
         $this->per_page     = $per_page;
     }//end __construct()
 
@@ -49,7 +49,6 @@ class CategoryController extends Controller
                 'categories_count'
             )
         );
-
     }//end index()
 
 
@@ -61,7 +60,6 @@ class CategoryController extends Controller
     public function create()
     {
         return view('admin.category.create');
-
     }//end create()
 
 
@@ -78,12 +76,11 @@ class CategoryController extends Controller
         // Retrieve the validated input data...
         $validated = $request->validated();
         
-        $obj_category = $this->repository->fillAndSave($validated);
+        $this->repository->fillAndSave($validated);
 
         Toastr::success('Category Successfully Saved :)', 'Success');
 
         return redirect()->route('admin.category.index');
-
     }//end store()
 
 
@@ -94,7 +91,7 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(string $id)
     {
         $category                = $this->repository->find($id);
         $category_articles       = $category->articles()->paginate($this->per_page);
@@ -108,7 +105,6 @@ class CategoryController extends Controller
                 'category_articles_count'
             )
         );
-
     }//end show()
 
 
@@ -119,12 +115,11 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(String $id)
+    public function edit(string $id)
     {
         $category = $this->repository->find($id);
 
         return view('admin.category.edit', compact('category'));
-
     }//end edit()
 
 
@@ -136,7 +131,7 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCategory $request, String $id)
+    public function update(UpdateCategory $request, string $id)
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
@@ -146,7 +141,6 @@ class CategoryController extends Controller
         Toastr::success('Category Successfully Updated :)', 'Success');
 
         return redirect()->route('admin.category.index');
-
     }//end update()
 
 
@@ -157,15 +151,12 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(String $id)
+    public function destroy(string $id)
     {
         $this->repository->remove($id);
         
         Toastr::success('Category Successfully Deleted :)', 'Success');
 
         return redirect()->back();
-
     }//end destroy()
-
-
 }//end class

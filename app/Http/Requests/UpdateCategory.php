@@ -18,7 +18,6 @@ class UpdateCategory extends FormRequest
         return [
             'name' => 'required|unique:categories|min:3|max:255'
         ];
-
     }//end rules()
 
 
@@ -32,7 +31,6 @@ class UpdateCategory extends FormRequest
         return [
             'name.required' => 'The article name shouldn\'t be blank!'
         ];
-
     }//end messages()
 
     /**
@@ -61,6 +59,4 @@ class UpdateCategory extends FormRequest
 
         $this->replace($input);
     }
-
-
 }//end class

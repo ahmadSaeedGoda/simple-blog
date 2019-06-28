@@ -17,5 +17,4 @@ trait ControllerClassMembersForPagingAndModeling
      * @var Int
      */
     protected $per_page;
-
 }

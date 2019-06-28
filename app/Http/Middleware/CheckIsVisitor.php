@@ -25,8 +25,5 @@ class CheckIsVisitor
             Toastr::error('You are not authorized to take this action', 'UnAuthorized');
             return redirect('/');
         }
-
     }//end handle()
-
-
 }//end class

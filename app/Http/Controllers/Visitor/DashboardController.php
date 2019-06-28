@@ -18,12 +18,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $repository = new Repository(new Category);
+        $repository = new Repository(new Category());
 
         $categories_count       = $repository->count();
-        $articles_count         = $repository->setModel(new Article)->getModel()->Published()->count();
-        $comments_count         = $repository->setModel(new Comment)->count();
-        $visitors_count         = $repository->setModel(new User)->getModel()->Visitor()->count();
+        $articles_count         = $repository->setModel(new Article())->getModel()->Published()->count();
+        $comments_count         = $repository->setModel(new Comment())->count();
+        $visitors_count         = $repository->setModel(new User())->getModel()->Visitor()->count();
 
         return view(
             'visitor.dashboard',
@@ -34,8 +34,5 @@ class DashboardController extends Controller
                 'visitors_count'
             )
         );
-
     }//end index()
-
-
 }//end class

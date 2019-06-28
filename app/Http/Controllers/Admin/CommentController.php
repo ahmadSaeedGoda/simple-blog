@@ -18,11 +18,10 @@ class CommentController extends Controller
      *
      * @param int $per_page
      */
-    public function __construct(Int $per_page = 500)
+    public function __construct(int $per_page = 500)
     {
-        $this->repository   = new Repository(new Comment);
+        $this->repository   = new Repository(new Comment());
         $this->per_page     = $per_page;
-
     }//end __construct()
 
 
@@ -46,7 +45,6 @@ class CommentController extends Controller
                 'comments_count'
             )
         );
-
     }//end index()
 
 
@@ -57,7 +55,7 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(string $id)
     {
         $comment = $this->repository->find($id);
 
@@ -67,8 +65,5 @@ class CommentController extends Controller
                 'comment'
             )
         );
-
     }//end show()
-
-
 }//end class

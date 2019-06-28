@@ -20,25 +20,25 @@ interface RepositoryInterface
     
     public function first(): Model;
     
-    public function with(Array $relations): Void;
+    public function with(array $relations): void;
 
     public function all(): Collection;
     
-    public function count(): Int;
+    public function count(): int;
     
-    public function page(Int $limit, Array $relations, String $orderBy, String $sorting): LengthAwarePaginator;
+    public function page(int $limit, array $relations, string $orderBy, string $sorting): LengthAwarePaginator;
     
-    public function find(String $id, Array $relations): Model;
+    public function find(string $id, array $relations): Model;
     
-    public function findBy(String $attribute, String $value, Array $relations): Model;
+    public function findBy(string $attribute, string $value, array $relations): Model;
     
-    public function getByAttributes(Array $attributes, String $operator, Array $relations): Collection;
+    public function getByAttributes(array $attributes, string $operator, array $relations): Collection;
     
-    public function fill(Array $attributes): Model;
+    public function fill(array $attributes): Model;
     
-    public function fillAndSave(Array $attributes): Model;
+    public function fillAndSave(array $attributes): Model;
     
-    public function update(String $id, Array $attributes): bool;
+    public function update(string $id, array $attributes): bool;
 
-    public function remove(String $key): bool;
+    public function remove(string $key): bool;
 }//end interface

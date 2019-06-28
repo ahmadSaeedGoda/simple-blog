@@ -15,31 +15,37 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::group(['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function () {
-    Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+Route::group(
+    ['as' => 'admin.', 'prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']],
+    function () {
+        Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
-    Route::put('article/{id}/publish', 'ArticleController@publish')->name('article.publish');
+        Route::put('article/{id}/publish', 'ArticleController@publish')->name('article.publish');
 
-    Route::resources([
-        'category' => 'CategoryController',
-        'article' => 'ArticleController'
-    ]);
-    
-    Route::resource('comment', 'CommentController')->only([
-        'index', 'show'
-    ]);
-});
+        Route::resources([
+            'category' => 'CategoryController',
+            'article' => 'ArticleController'
+        ]);
+        
+        Route::resource('comment', 'CommentController')->only([
+            'index', 'show'
+        ]);
+    }
+);
 
-Route::group(['as' => 'visitor.', 'prefix' => 'visitor', 'namespace' => 'Visitor', 'middleware' => ['auth', 'visitor']], function () {
-    Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+Route::group(
+    ['as' => 'visitor.', 'prefix' => 'visitor', 'namespace' => 'Visitor', 'middleware' => ['auth', 'visitor']],
+    function () {
+        Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
-    Route::resource('article', 'ArticleController')->only([
-        'index', 'show'
-    ]);
+        Route::resource('article', 'ArticleController')->only([
+            'index', 'show'
+        ]);
 
-    Route::resource('comment', 'CommentController')->only([
-        'store'
-    ]);
+        Route::resource('comment', 'CommentController')->only([
+            'store'
+        ]);
 
-    Route::post('article', 'ArticleController@getArticlesByCategory')->name('articles.category');
-});
+        Route::post('article', 'ArticleController@getArticlesByCategory')->name('articles.category');
+    }
+);

@@ -19,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }//end register()
 
 
@@ -33,6 +32,4 @@ class AppServiceProvider extends ServiceProvider
         Article::observe(ArticleObserver::class);
         Category::observe(CategoryObserver::class);
     }//end boot()
-
-
 }//end class

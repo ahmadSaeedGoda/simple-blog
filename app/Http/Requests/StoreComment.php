@@ -20,7 +20,6 @@ class StoreComment extends FormRequest
             'user_id'    => 'required|integer|min:1',
             'comment'    => 'required|String|min:3|max:1000',
         ];
-
     }//end rules()
 
 
@@ -36,7 +35,6 @@ class StoreComment extends FormRequest
             'user_id.required'    => 'The new comment must be created by user.',
             'comment.required'    => 'The comment body shouldn\'t be blank!',
         ];
-
     }//end messages()
 
     /**
@@ -65,5 +63,4 @@ class StoreComment extends FormRequest
 
         $this->replace($input);
     }
-
 }//end class

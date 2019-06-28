@@ -22,9 +22,9 @@ class CommentController extends Controller
      *
      * @param Int $per_page
      */
-    public function __construct(Int $per_page = 500)
+    public function __construct(int $per_page = 500)
     {
-        $this->repository = new Repository(new Comment);
+        $this->repository = new Repository(new Comment());
         $this->per_page   = $per_page;
     }//end __construct()
 
@@ -45,8 +45,5 @@ class CommentController extends Controller
         Toastr::success('Comment Successfully Saved :)', 'Success');
         
         return redirect()->back();
-
     }//end store()
-
-
 }//end class

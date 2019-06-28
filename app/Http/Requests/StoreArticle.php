@@ -19,7 +19,6 @@ class StoreArticle extends FormRequest
             'is_published' => 'boolean',
             'body'         => 'required|String|min:3|max:3000',
         ];
-
     }//end rules()
 
 
@@ -35,7 +34,6 @@ class StoreArticle extends FormRequest
             'title.required'       => 'A article title shouldn\'t be blank!',
             'body.required'        => 'The article body shouldn\'t be blank!',
         ];
-
     }//end messages()
 
     /**

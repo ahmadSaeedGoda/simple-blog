@@ -21,7 +21,6 @@ class UpdateArticle extends FormRequest
             'is_published'  => 'boolean',
             'body'          => 'required|min:3|max:3000',
         ];
-
     }//end rules()
 
 
@@ -37,7 +36,6 @@ class UpdateArticle extends FormRequest
             'title.required'       => 'A article title shouldn\'t be blank!',
             'body.required'        => 'The article body shouldn\'t be blank!',
         ];
-
     }//end messages()
 
 

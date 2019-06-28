@@ -28,7 +28,6 @@ class Article extends Model
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
-
     }//end category()
 
 
@@ -38,7 +37,6 @@ class Article extends Model
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
-
     }//end comments()
 
 
@@ -51,7 +49,6 @@ class Article extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
-
     }//end scopePublished()
 
 
@@ -64,8 +61,5 @@ class Article extends Model
     public function scopePending($query)
     {
         return $query->where('is_published', false);
-
     }//end scopePending()
-
-
 }//end class

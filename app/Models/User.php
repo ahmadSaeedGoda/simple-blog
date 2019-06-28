@@ -59,7 +59,6 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
-
     }//end comments()
 
 
@@ -70,8 +69,7 @@ class User extends Authenticatable
      */
     public function getFullNameAttribute()
     {
-        return ucwords($this->first_name.' '.$this->last_name);
-
+        return ucwords($this->first_name . ' ' . $this->last_name);
     }//end getFullNameAttribute()
 
 
@@ -84,7 +82,6 @@ class User extends Authenticatable
     public function scopeAdmin($query)
     {
         return $query->where('is_admin', true);
-
     }//end scopeAdmin()
 
 
@@ -97,8 +94,5 @@ class User extends Authenticatable
     public function scopeVisitor($query)
     {
         return $query->where('is_admin', false);
-
     }//end scopeVisitor()
-
-
 }//end class

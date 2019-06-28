@@ -38,7 +38,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-
     }//end __construct()
 
 
@@ -59,8 +58,5 @@ class LoginController extends Controller
         } else {
             $this->redirectTo = route('visitor.dashboard');
         }
-
     }//end authenticated()
-
-
 }//end class

@@ -24,9 +24,9 @@ class ArticleController extends Controller
      *
      * @param Int $per_page
      */
-    public function __construct(Int $per_page = 500)
+    public function __construct(int $per_page = 500)
     {
-        $this->repository   = new Repository(new Article);
+        $this->repository   = new Repository(new Article());
         $this->per_page     = $per_page;
     }//end __construct()
 
@@ -58,7 +58,6 @@ class ArticleController extends Controller
         $categories = $this->repository->setModel(new Category())->all();
 
         return view('admin.article.create', compact('categories'));
-
     }//end create()
 
 
@@ -80,7 +79,6 @@ class ArticleController extends Controller
         Toastr::success('Article Successfully Saved :)', 'Success');
 
         return redirect()->route('admin.article.index');
-
     }//end store()
 
 
@@ -91,7 +89,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(string $id)
     {
         $article                = $this->repository->find($id);
         $article_comments       = $article->comments()->with('user')->paginate($this->per_page);
@@ -105,7 +103,6 @@ class ArticleController extends Controller
                 'article_comments_count'
             )
         );
-
     }//end show()
 
 
@@ -116,14 +113,13 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit(String $id)
+    public function edit(string $id)
     {
         $article    = $this->repository->find($id);
         
         $categories = $this->repository->setModel(new Category())->all();
 
         return view('admin.article.edit', compact('article', 'categories'));
-
     }//end edit()
 
 
@@ -135,7 +131,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateArticle $request, String $id)
+    public function update(UpdateArticle $request, string $id)
     {
         // Retrieve the validated input data...
         $validated = $request->validated();
@@ -145,7 +141,6 @@ class ArticleController extends Controller
         Toastr::success('Article Successfully Updated :)', 'Success');
 
         return redirect()->route('admin.article.index');
-
     }//end update()
 
 
@@ -156,14 +151,13 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy(String $id)
+    public function destroy(string $id)
     {
         $this->repository->remove($id);
         
         Toastr::success('Article Successfully Deleted :)', 'Success');
 
         return redirect()->back();
-
     }//end destroy()
 
 
@@ -174,15 +168,12 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function publish(String $id)
+    public function publish(string $id)
     {
-        $this->repository->update($id, ['is_published'=>true]);
+        $this->repository->update($id, ['is_published' => true]);
 
         Toastr::success('Article Successfully Published :)', 'Success');
 
         return redirect()->back();
-
     }//end publish()
-
-
 }//end class

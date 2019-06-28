@@ -27,7 +27,6 @@ class Comment extends Model
     public function article()
     {
         return $this->belongsTo('App\Models\Article');
-
     }//end article()
 
 
@@ -37,8 +36,5 @@ class Comment extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
-
     }//end user()
-
-
 }//end class

@@ -23,9 +23,9 @@ class ArticleController extends Controller
      *
      * @param Int $per_page
      */
-    public function __construct(Int $per_page = 500)
+    public function __construct(int $per_page = 500)
     {
-        $this->repository = new Repository(new Article);
+        $this->repository = new Repository(new Article());
         $this->per_page   = $per_page;
     }//end __construct()
 
@@ -63,7 +63,7 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show(String $id)
+    public function show(string $id)
     {
         $article                = $this->repository->find($id);
         
@@ -76,7 +76,6 @@ class ArticleController extends Controller
                 'article_comments_count'
             )
         );
-
     }//end show()
 
 
@@ -106,11 +105,13 @@ class ArticleController extends Controller
 
         $category_id        = $request->category_id;
 
-        $selected_category  = $this->repository->setModel(new Category)->find($category_id);
+        $selected_category  = $this->repository->setModel(new Category())->find($category_id);
 
         $categories         = $this->repository->all();
         
-        $articles           = $this->repository->setModel(new Article)->getModel()->Published()->where('category_id', $category_id)->latest()->paginate($this->per_page);
+        $articles           = $this->repository->setModel(new Article())
+            ->getModel()->Published()->where('category_id', $category_id)
+            ->latest()->paginate($this->per_page);
 
         $articles_count     = $this->repository->getModel()->Published()->count();
 
@@ -123,8 +124,5 @@ class ArticleController extends Controller
                 'selected_category'
             )
         );
-
     }//end getArticlesByCategory()
-
-
 }//end class
